@@ -1,0 +1,32 @@
+<link rel="import" href="../../bower_components/paper-material/paper-material.html">
+
+<dom-module id="fon-student-list-item">
+
+    <style>
+    </style>
+
+    <template>
+        <paper-meterial elevation="2">
+            <div id ="test" horizontal layout>
+                <div>{{entity.firstName}}</div>
+                <div>{{entity.lastName}}</div>
+            </div>
+        </paper-meterial>
+    </template>
+
+    <script>
+        Polymer({
+            is: "fon-student-list-item",
+
+            properties: {
+                entity:{
+                    type: Object
+                },
+                key:{
+                    type:Array
+                }
+            }
+        });
+    </script>
+
+</dom-module>

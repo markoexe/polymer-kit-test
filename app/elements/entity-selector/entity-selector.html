@@ -1,0 +1,112 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../breeze-client.html">
+
+<script>
+
+    (function() {
+        Polymer({
+            is: 'entity-selector',
+
+            properties: {
+                entityTypeName: {
+                    type: String
+                },
+                selectedEntityKey:{
+                    type: Array,
+                    notify: true,
+                    observer: '_selectedEntityKeyChanged'
+                },
+                selectedEntityIndex:{
+                    type: Number,
+                    notify: true
+                },
+                selectedEntity:{
+                    type: Object,
+                    notify: true
+                },
+                entities:{
+                    type: Array,
+                    value: [],
+                    notify:true
+                },
+                model:{
+                    type: Object,
+                    notify: true
+                }
+            },
+
+            observers: [
+                '_setEntities(model, entityTypeName)',
+                '_setSelectedEntity(model, entityTypeName, selectedEntityIndex)'
+            ],
+
+            _selectedEntityKeyChanged: function(newValue, oldValue){
+                if (newValue){
+                    var index, len;
+
+                    for (index = 0, len = this.entities.length; index < len; ++index) {
+                        if (this.entities[index].id == newValue) {
+                            if (this.selectedEntityIndex != index) {
+                                this.selectedEntityIndex = index;
+                            }
+                            return;
+                        }
+                    }
+
+                    if (this.selectedEntityIndex != 0)
+                        this.selectedEntityIndex = 0;
+
+                }
+                else{
+                    if (this.entities && this.entities.length == 0){
+                        if (this.selectedEntityIndex != null)
+                            this.selectedEntityIndex = null;
+                    }
+                    else{
+                        this.selectedEntityKey = oldValue;
+                    }
+                }
+            },
+
+            _setEntities: function(model, entityTypeName){
+                if (model && entityTypeName){
+                    //TODO: ubaci funkcije na model ... umesto direktnog poziva nad entityManager
+                    var entityType = model.entityManager.metadataStore.getEntityType(entityTypeName);
+                    this.entities = model.entityManager.getEntities(entityType);
+
+                    this.selectedEntityKey = this.entities[0].id;
+                }
+                else{
+                    this.entities = [];
+                    this.selectedEntityIndex = null;
+                }
+            },
+
+            _setSelectedEntity: function(model, entityTypeName, selectedEntityIndex) {
+                if (model && entityTypeName && selectedEntityIndex != null) {
+
+                    this.selectedEntity = this.entities[selectedEntityIndex];
+
+                    if (this.selectedEntityKey != this.selectedEntity.id)
+                        this.selectedEntityKey = this.selectedEntity.id;
+                }
+                else {
+                    this.selectedEntity = null;
+
+                    if (this.selectedEntityKey != null)
+                        this.selectedEntityKey = null;
+                }
+            }
+        });
+    })();
+</script>

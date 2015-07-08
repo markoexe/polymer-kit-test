@@ -1,0 +1,93 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../entity-selector/entity-selector.html">
+<link rel="import" href="fon-student-preview-all-model.html">
+<link rel="import" href="fon-student-preview-all-model.js">
+
+
+
+<dom-module id="fon-student-preview-all">
+    <style>
+        :host {
+            display: block;
+        }
+        iron-selector > * {
+            padding: 8px;
+        }
+
+        .iron-selected {
+            background-color: #ddd;
+        }
+    </style>
+    <template flex>
+        <!--<fon-student-preview-all-model id="studentPreviewAllModel"></fon-student-preview-all-model>-->
+
+        <entity-selector
+                id="studentSelector"
+                entity-type-name="Student"
+                selected-entity-key="{{selectedStudentKey}}"
+                selected-entity-index="{{selectedStudentIndex}}"
+                selected-entity="{{selectedStudent}}"
+                entities="{{students}}",
+                model="{{studentPreviewAllModel}}">
+        </entity-selector>
+
+        <iron-selector selected="{{selectedStudentIndex}}">
+            <template is="dom-repeat" items="{{students}}" as="student">
+                <fon-student-list-item entity="{{student}}"></fon-student-list-item>
+            </template>
+        </iron-selector>
+
+
+
+        <div></div>
+        <div horizontal layout>
+            <div>selected student: <span>{{selectedStudentKey}}</span></div>
+            <div>selected student: <span>{{selectedStudent.firstName}}</span></div>
+            <input id="inputStudentKey"/>
+            <button on-click="proba">Select student</button>
+        </div>
+    </template>
+</dom-module>
+<script>
+
+    (function() {
+        Polymer({
+            is: 'fon-student-preview-all',
+
+            properties: {
+                foo: {
+                    type: String,
+                    value: 'bar',
+                    notify: true
+                },
+                studentPreviewAllModel:{
+                    type: Object,
+                    //readonly: true,
+                    notify: true
+                }
+            },
+
+            ready: function(){
+//                this.studentPreviewAllModel = this.$.studentPreviewAllModel;
+//                this.studentPreviewAllModel = new Fon.StudentPreviewAllModel();
+                this.studentPreviewAllModel = new FON.StudentPreviewAllModel();
+
+            },
+
+            proba: function(){
+                this.$.studentSelector.selectedEntityKey = this.$.inputStudentKey.value;
+            }
+        });
+    })();
+</script>

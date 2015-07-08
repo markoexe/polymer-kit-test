@@ -11,14 +11,15 @@
         properties: {
             entityManager: {
                 type: Object,
-                notify: true
+                notify: true,
+                readOnly: true
             }
         },
 
         ready: function(){
             var entityManager = this._createEntityManager();
             this._loadData(entityManager);
-            this.entityManager = entityManager;
+            this._setEntityManager(entityManager);
         },
 
         _loadData: function(entityManager){

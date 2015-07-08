@@ -1,19 +1,20 @@
 /**
  * Created by Marko on 7/8/2015.
  */
+/// <reference path="../../../typings/breeze.d.ts" />
+
 module FON{
-    declare var breeze:any;
 
     export class StudentPreviewAllModel{
-        private _entityManager: any;
+        private _entityManager: breeze.EntityManager;
 
-        constructor () {
+        constructor (){
             this._entityManager = this._createEntityManager();
 
             this._loadData(this._entityManager);
         }
 
-        get entityManager() : any {
+        get entityManager() : breeze.EntityManager {
             return this._entityManager;
         }
 

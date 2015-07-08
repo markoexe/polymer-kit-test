@@ -5,12 +5,16 @@ module FON{
     declare var breeze:any;
 
     export class StudentPreviewAllModel{
-        public entityManager: any;
+        private _entityManager: any;
 
-        constructor (){
-            this.entityManager = this._createEntityManager();
+        constructor () {
+            this._entityManager = this._createEntityManager();
 
-            this._loadData(this.entityManager);
+            this._loadData(this._entityManager);
+        }
+
+        get entityManager() : any {
+            return this._entityManager;
         }
 
         /*get entityManager(): any {
